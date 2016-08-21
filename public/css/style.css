@@ -1,0 +1,144 @@
+@import 'https://fonts.googleapis.com/css?family=Bungee+Shade';
+@import 'https://fonts.googleapis.com/css?family=Cantarell';
+@import 'https://fonts.googleapis.com/css?family=Yatra+One';
+
+
+#mainForm{
+  margin: 30px 50px 0 0;
+  text-align: center;
+}
+
+li{
+  font-family: 'Cantarell', sans-serif;
+  font-size: 24px;  
+}
+
+ul{
+  list-style-type: none;
+}
+
+.container{
+  margin: 0 10% 0 10%;
+}
+.statsGroup{
+  display: inline-block;
+  margin: 20px 0 10px 40px;
+}
+
+.badgeGroup{
+  float: right;
+}
+
+.badgeImg{
+  height: 60px;
+  width: auto;
+  margin: 40px 250px 0 0;
+}
+
+.circle{
+  width: 150px;
+  height: 155px;
+  border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+  background: url(http://link-to-your/image.jpg) no-repeat;
+  float: left;
+}
+
+.name{
+  font-family: 'Bungee Shade', cursive;
+  margin-bottom: 10px;
+}
+
+.winMajority{
+  background-color: #D0FFB3;
+}
+
+.winMinority{
+  background-color: #FFB3D6;
+}
+
+.rate{
+  font-size: 28px;
+}
+
+.resultsTitle{
+  font-family: 'Yatra One', cursive;
+  font-size: 30px;
+  position: relative;
+  top: 80px;
+  left: 200px;
+  margin: 0 0 -22px 0;
+}
+
+.sortDiv{
+  position: relative;
+  text-align: right;
+  top: -15px;
+}
+
+.sortText{
+  font-family: 'Yatra One', cursive;
+  font-size: 15px;
+}
+
+.homeTitle{
+  font-family: 'Bungee Shade', cursive;
+  text-align: center;
+  margin: 200px 0 0 0;
+  font-size: 60px;
+}
+
+#homeButton{
+  position: absolute;
+  top: 0px;
+  font-family: 'Bungee Shade', cursive;
+  font-size: 30px;
+  padding: 30px;
+}
+
+a{
+  text-decoration: none;
+  color: black;
+}
+
+.searchDiv{
+  position: relative;
+  top: 20px;
+  text-align: right;
+}
+
+.homeInput{
+  width: 400px;
+  height: 40px;
+  margin: 0 0 0 40px;
+}
+
+.resultInput{
+  width: 200px;
+  height: 40px;
+}
+
+.badgeText{
+  font-family: 'Yatra One', cursive;
+  font-size: 24px;
+  position: relative;
+  left: 70%;
+  top: 60px;
+}
+
+.teemoHomeImg{
+  z-index: -1;
+  position: absolute;
+  top: 20px;
+  left: -220px;
+}
+
+
+
+
+
+
+
+
+
