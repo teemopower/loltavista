@@ -134,9 +134,29 @@ a{
   left: -220px;
 }
 
+.loginDiv{
+  margin-top: 10%;
+}
 
+.signupDiv{
+  margin-top: 10%;
+}
 
+.signupBtn{
+  position: absolute;
+  top: 20px;
+  right: 160px;
+  border-style: solid;
+  padding: 5px;
+}
 
+.loginBtn{
+  position: absolute;
+  top: 20px;
+  right: 100px;
+  border-style: solid;
+  padding: 5px;
+}
 
 
 

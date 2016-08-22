@@ -13,13 +13,13 @@ passport.deserializeUser(function(id, cb) {
 });
 
 passport.use(new LocalStrategy({
-  usernameField: 'email',
+  usernameField: 'name',
   passwordField: 'password'
-}, function(email, password, cb) {
+}, function(username, password, cb) {
   db.user.find({
-    where: { email: email }
+    where: { name: username }
   }).then(function(user) {
-    if(!user || !user.validPassword(password)) {
+    if (!user || !user.validPassword(password)) {
       cb(null, false);
     } else {
       cb(null, user);

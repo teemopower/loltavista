@@ -3,7 +3,7 @@
   <a href="/" id="homeButton">LOLta Vista</a>
 
   <div class="searchDiv">
-    <input id="addEntry" class="resultInput" type="text" value="teemo is iove">
+    <input id="addEntry" class="resultInput" type="text" value="<%-JSON.stringify(currentUser['name']).replace(/\"/g, "")%>">
     <input type="button" id="btn" value="Search" class="btn btn-info">
   </div>
   
