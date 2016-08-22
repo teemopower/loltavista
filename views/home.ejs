@@ -5,6 +5,10 @@
 <img src="/images/teemo2.jpg" class="teemoHomeImg">
 
 <form method="" action="" id="mainForm">
-  <input id="addEntry" class="homeInput" type="text" value="<%- JSON.stringify(currentUser['name']).replace(/\"/g, "") %>">
+<% if (JSON.stringify(currentUser)){ %>
+  <input id="addEntry" class="homeInput" type="text" value="<%= JSON.stringify(currentUser)['name'].replace(/\"/g, "") %>">
+<% } else { %>
+  <input id="addEntry" class="homeInput" type="text" value="" placeholder="Summoner Name">
+<% } %>
   <input type="button" id="btn" value="Search" class="btn btn-info">
 </form>
