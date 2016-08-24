@@ -137,9 +137,23 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-app.get('/live', function(req, res) {
-  res.render('live');
+app.get('/login', function(req, res) {
+  res.render('login');
+});
+
+app.post('/live', function(req, res) {
+  console.log(req.body);
+  //res.render('live');
 });
 
 var server = app.listen(process.env.PORT || 3000);
 module.exports = server;
+
+
+
+
+
+
+
+
+

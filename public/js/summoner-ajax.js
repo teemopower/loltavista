@@ -77,40 +77,41 @@ function liveLookUp(id, api){
       success: function (json) {
         console.log(json);
 
-        var teamOneArray = [];
-        var teamTwoArray = [];
+        var teamLive = {};
+        var teamArray = [];
 
         for(var i = 0; i < json['participants'].length; i++){
           //console.log(json['participants'][i]['summonerName']);
 
           // SET DIFFERENT TEAM STATS
-          if(json['participants'][i]){
+          if(json['participants'][i]['summonerName']){
             
             console.log("team  - " + json['participants'][i]['summonerName']);
             
-            if(json['participants'][i]['teamId'] === 100){
-              teamOneArray.push(json['participants'][i]['summonerName'])
-
-            } else if (json['participants'][i]['teamId'] === 200){
-              teamTwoArray.push(json['participants'][i]['summonerName']);
+            teamLive = {
+              summonerID: json['participants'][i]['summonerId'],
+              summonerName: json['participants'][i]['summonerName'],
+              championId: json['participants'][i]['championId'],
+              teamId: json['participants'][i]['teamId']
             }
 
+            teamArray.push(teamLive);
           }    
+
         }// END OF FOR LOOP
-        
         // DATA SENT TO INDEX.JS
          $.ajax({
             method: 'post',
             url: '/live',
             data: {
-              teamOne: teamOneArray,
-              teamTwo: teamTwoArray
+              teamLive: teamArray
             }
               
           }).done(function(data){
             console.log('ajax team success');
-            //window.location = "/results";
+            window.location = "/live";
           });
+        
 
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
