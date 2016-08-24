@@ -15,9 +15,11 @@ var db = require('./models');
 var app = express();
 
 var summonerName;
+var summonerNameLive;
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(ejsLayouts);
 app.use(express.static(__dirname + '/public'));
 
@@ -141,10 +143,41 @@ app.get('/login', function(req, res) {
   res.render('login');
 });
 
-app.post('/live', function(req, res) {
-  console.log(req.body);
-  //res.render('live');
+app.get('/live', function(req, res) {
+// READ FROM DATABASE
+  db.live.findAll({
+    where: {
+      summonerName: summonerNameLive // SET NAME FROM GLOBAL
+    },
+    order: [['teamId','DESC']]
+  }).then(function(sum) {
+    res.render('live', { sum: sum });
+  });
+
+  res.render('live');
 });
+
+app.post('/live', function(req, res) {
+  console.log(req.body.arr[0].summonerName);
+
+  for(var i = 0; i < req.body.length; i++){
+    
+  }
+  // db.live.findOrCreate({
+  //   where: { summonerName: "test"},
+  //   defaults: {
+  //     //summonerId: 123,
+  //     //championId: data[i]['championId'],
+  //     //teamId: data[i]['teamId'] 
+  //   }
+  // }).spread(function(user, created) {
+  //   //console.log(user);
+  // }).catch(function(error) {
+  //   //console.log(error);
+  // });
+
+
+}); // end of post /live
 
 var server = app.listen(process.env.PORT || 3000);
 module.exports = server;

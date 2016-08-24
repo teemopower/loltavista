@@ -99,20 +99,21 @@ function liveLookUp(id, api){
           }    
 
         }// END OF FOR LOOP
-        // DATA SENT TO INDEX.JS
-         $.ajax({
-            method: 'post',
-            url: '/live',
-            data: {
-              teamLive: teamArray
-            }
-              
-          }).done(function(data){
-            console.log('ajax team success');
-            window.location = "/live";
-          });
-        
 
+        // DATA SENT TO INDEX.JS
+        var dataObj = {
+          arr: teamArray
+        }
+        console.log(dataObj);
+        $.ajax({
+          method: 'post',
+          url: '/live',
+          contentType: 'application/json',
+          data: JSON.stringify(dataObj),   
+        }).done(function(data){
+          console.log('ajax team success');
+          window.location = "/live";
+        });
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
           alert("error liveLookup");
