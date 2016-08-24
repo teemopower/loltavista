@@ -2,6 +2,10 @@
 @import 'https://fonts.googleapis.com/css?family=Cantarell';
 @import 'https://fonts.googleapis.com/css?family=Yatra+One';
 
+html {
+  /* Size of largest container or bigger */
+  min-width: 1080px;
+}
 
 #mainForm{
   margin: 30px 50px 0 0;

@@ -27,7 +27,6 @@ app.use(session({
   saveUninitialized: true
 }));
 
-
 app.use(flash());
 
 app.use(passport.initialize());
@@ -137,7 +136,6 @@ app.get('/logout', function(req, res) {
   req.flash('success', 'You have logged out');
   res.redirect('/');
 });
-
 
 var server = app.listen(process.env.PORT || 3000);
 module.exports = server;

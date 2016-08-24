@@ -17,7 +17,6 @@
 </head>
 <body>
   <div class="container">
-
       <% if(alerts.error) { %>
         <% alerts.error.forEach(function(msg) { %>
           <div class="alert alert-danger"><%= msg %></div>
@@ -29,7 +28,6 @@
           <div class="alert alert-success"><%= msg %></div>
         <% }); %>
       <% } %>
-
   </div>
 
   <%- body %>

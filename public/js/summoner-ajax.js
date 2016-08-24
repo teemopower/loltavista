@@ -69,15 +69,15 @@ $(document).ready(function(){
               winRate: ((data["champions"][i]["stats"]["totalSessionsWon"]/data["champions"][i]["stats"]["totalSessionsPlayed"])*100).toFixed()
             }
 
-            // DATA SENT TO INDEX.JS
-             $.ajax({
-                method: 'post',
-                url: '/results',
-                data: obj
-              }).done(function(data){
-                console.log('ajax getRanked success');
-                window.location = "/results";
-              });
+          // DATA SENT TO INDEX.JS
+           $.ajax({
+              method: 'post',
+              url: '/results',
+              data: obj
+            }).done(function(data){
+              console.log('ajax getRanked success');
+              window.location = "/results";
+            });
           }
         }  
       },
