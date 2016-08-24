@@ -160,22 +160,23 @@ app.get('/live', function(req, res) {
 app.post('/live', function(req, res) {
   console.log(req.body.arr[0].summonerName);
 
-  for(var i = 0; i < req.body.length; i++){
-    
-  }
-  // db.live.findOrCreate({
-  //   where: { summonerName: "test"},
-  //   defaults: {
-  //     //summonerId: 123,
-  //     //championId: data[i]['championId'],
-  //     //teamId: data[i]['teamId'] 
-  //   }
-  // }).spread(function(user, created) {
-  //   //console.log(user);
-  // }).catch(function(error) {
-  //   //console.log(error);
-  // });
+  for(var i = 0; i < req.body.arr.length; i++){
+    db.live.findOrCreate({
+    where: { summonerName: req.body.arr[i].summonerName},
+    defaults: {
+      summonerName: req.body.arr[i].summonerName,
+      summonerId: req.body.arr[i].summonerId,
+      championId: req.body.arr[i].championId,
+      teamId: req.body.arr[i].teamId
+    }
+    }).spread(function(user, created) {
+      //console.log(user);
+    }).catch(function(error) {
+      //console.log(error);
+    });
 
+  }
+  
 
 }); // end of post /live
 
