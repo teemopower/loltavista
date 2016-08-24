@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var live = sequelize.define('live', {
+  var lives = sequelize.define('lives', {
     summonerId: DataTypes.INTEGER,
     summonerName: DataTypes.STRING,
     championId: DataTypes.INTEGER,
@@ -13,5 +13,5 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
-  return live;
+  return lives;
 };

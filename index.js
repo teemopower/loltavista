@@ -165,7 +165,8 @@ app.post('/live', function(req, res) {
       summonerName: req.body.arr[i].summonerName,
       summonerId: req.body.arr[i].summonerId,
       championId: req.body.arr[i].championId,
-      teamId: req.body.arr[i].teamId
+      teamId: req.body.arr[i].teamId,
+      championName: req.body.arr[i].championName
     }
     }).spread(function(user, created) {
       res.redirect('live');

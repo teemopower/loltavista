@@ -20,6 +20,9 @@ module.exports = {
       teamId: {
         type: Sequelize.INTEGER
       },
+      championName: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

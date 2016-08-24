@@ -92,7 +92,8 @@ function liveLookUp(id, api){
               summonerID: json['participants'][i]['summonerId'],
               summonerName: json['participants'][i]['summonerName'],
               championId: json['participants'][i]['championId'],
-              teamId: json['participants'][i]['teamId']
+              teamId: json['participants'][i]['teamId'],
+              championName: getChampionName(json['participants'][i]['championId'])
             }
 
             teamArray.push(teamLive);
