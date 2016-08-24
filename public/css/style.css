@@ -1,6 +1,7 @@
 @import 'https://fonts.googleapis.com/css?family=Bungee+Shade';
 @import 'https://fonts.googleapis.com/css?family=Cantarell';
 @import 'https://fonts.googleapis.com/css?family=Yatra+One';
+@import 'https://fonts.googleapis.com/css?family=Permanent+Marker';
 
 html {
   /* Size of largest container or bigger */
@@ -162,6 +163,49 @@ a{
   padding: 5px;
 }
 
+.liveContainer{
+  width: 1000px;
+  height: 1000px;
+  margin: 50px;
+}
+
+.team1{
+  float: left;
+  display: inline-block;
+  clear: right;
+  margin: 100px 0px 0 0px;
+  background-color: gray;
+}
+
+.team2{
+  float: right;
+  position: relative;
+  display: inline-block;
+  left: -100px;
+  top: 400px;
+  clear: left;
+  background-color: gray;
+}
+
+.teamOneName{
+  margin-left: 70px;
+}
+
+.teamTwoName{
+  margin-left: 70px;
+}
+
+.versus{
+  position: absolute;
+  top: 400px;
+  left: 500px;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 50px;
+}
+
+.liveTitle{
+  font-family: 'Permanent Marker', cursive;
+}
 
 
 

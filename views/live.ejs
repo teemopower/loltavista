@@ -1,7 +1,22 @@
-live page
-
+<h1 class='liveTitle'>live page</h1>
+<div class='liveContainer'>
+<p class="versus">VS.</p>
+<% var count = 0;%>
 <% sum.forEach(function(data){%>
-  <ul>
-    <li><%= data.summonerName %></li>
-  </ul>
+  <% //console.log(data);%>
+  <% count += 1;%>
+ 
+    <% if (count <= 5){ %>
+      <ul>
+        <div class='team1'>
+          <li class="teamOneName"><%= data.summonerName %></li>
+        </div>
+      <% } else if (count >= 6 && count <= 10){ %>
+        <div class='team2'>
+          <li class="teamTwoName"><%= data.summonerName %></li>
+        </div>
+      </ul>
+    <% } %>
+  
 <% }); %>
+</div>

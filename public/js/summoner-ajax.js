@@ -86,7 +86,7 @@ function liveLookUp(id, api){
           // SET DIFFERENT TEAM STATS
           if(json['participants'][i]['summonerName']){
             
-            console.log("team  - " + json['participants'][i]['summonerName']);
+            console.log("champname  - " + getChampionName(json['participants'][i]['championId']));
             
             teamLive = {
               summonerID: json['participants'][i]['summonerId'],
