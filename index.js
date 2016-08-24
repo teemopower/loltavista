@@ -144,17 +144,15 @@ app.get('/login', function(req, res) {
 });
 
 app.get('/live', function(req, res) {
-// READ FROM DATABASE
+  
+  // READ FROM DATABASE
   db.live.findAll({
-    where: {
-      summonerName: summonerNameLive // SET NAME FROM GLOBAL
-    },
-    order: [['teamId','DESC']]
+      order: [['createdAt','DESC']],
+      limit: 10    
   }).then(function(sum) {
     res.render('live', { sum: sum });
   });
 
-  res.render('live');
 });
 
 app.post('/live', function(req, res) {
@@ -170,14 +168,11 @@ app.post('/live', function(req, res) {
       teamId: req.body.arr[i].teamId
     }
     }).spread(function(user, created) {
-      //console.log(user);
+      res.redirect('live');
     }).catch(function(error) {
       //console.log(error);
     });
-
   }
-  
-
 }); // end of post /live
 
 var server = app.listen(process.env.PORT || 3000);

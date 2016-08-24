@@ -97,14 +97,13 @@ function liveLookUp(id, api){
 
             teamArray.push(teamLive);
           }    
-
-        }// END OF FOR LOOP
+        }// END FOR LOOP
 
         // DATA SENT TO INDEX.JS
         var dataObj = {
           arr: teamArray
         }
-        console.log(dataObj);
+        
         $.ajax({
           method: 'post',
           url: '/live',
