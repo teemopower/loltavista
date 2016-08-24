@@ -137,5 +137,9 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
+app.get('/live', function(req, res) {
+  res.render('live');
+});
+
 var server = app.listen(process.env.PORT || 3000);
 module.exports = server;

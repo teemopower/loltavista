@@ -2,6 +2,10 @@ $(document).ready(function(){
 
   // GLOBALS
   var summonerName;
+  var summonerName2;
+  var API_KEY = "RGAPI-0EA9F2AB-FCFE-402E-8EBD-D96895015531";
+
+  ///////////////////////////////////////////////// Search Button  ///////////////////////////////////////////////// 
 
   $('#btn').on('click',function(){
     $.ajax({
@@ -16,16 +20,111 @@ $(document).ready(function(){
           //alert("error getting Summoner data 2!");
       }
     });
-
-    summonerName = $('#addEntry').val(); // input value
-
     // GET SUMMONER ID
     summonerLookUp();
   });
 
+  summonerName = $('#addEntry').val(); // input value
+
+  ///////////////////////////////////////////////// Live Button ///////////////////////////////////////////////// 
+
+  $('#btnLive').on('click',function(){
+    console.log('livebtn');
+    summonerName2 = $('#addEntry').val();
+    idLookUp();
+  });
+
+  ///////////////////////////////////////////////// ONLY ID LOOK UP  ///////////////////////////////////////////////// 
+
+function idLookUp(){
+
+    if (summonerName2 !== "") {
+
+      $.ajax({
+        url: 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName2 + '?api_key=' + API_KEY,
+        type: 'GET',
+        dataType: 'json',
+        success: function (json) {
+            
+          var sumNamenospace = summonerName2.replace(/\s/g, '');
+          sumNamenospace = sumNamenospace.toLowerCase().trim();
+          
+          var summonerID = json[sumNamenospace].id;
+
+          console.log(summonerID);
+
+          liveLookUp(summonerID, API_KEY);
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("error getting Summoner ID!");
+        }
+      });
+    } 
+}
+
+///////////////////////////////////////////////// LIVE GAME  ///////////////////////////////////////////////// 
+
+function liveLookUp(id, api){
+
+  if (id) {
+    $.ajax({
+      url: "https://na.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/" + id + "?api_key=" + api ,
+      type: 'GET',
+      dataType: 'json',
+      data:{},
+
+      success: function (json) {
+        console.log(json);
+
+        var teamOneArray = [];
+        var teamTwoArray = [];
+
+        for(var i = 0; i < json['participants'].length; i++){
+          //console.log(json['participants'][i]['summonerName']);
+
+          // SET DIFFERENT TEAM STATS
+          if(json['participants'][i]){
+            
+            console.log("team  - " + json['participants'][i]['summonerName']);
+            
+            if(json['participants'][i]['teamId'] === 100){
+              teamOneArray.push(json['participants'][i]['summonerName'])
+
+            } else if (json['participants'][i]['teamId'] === 200){
+              teamTwoArray.push(json['participants'][i]['summonerName']);
+            }
+
+          }    
+        }// END OF FOR LOOP
+        
+        // DATA SENT TO INDEX.JS
+         $.ajax({
+            method: 'post',
+            url: '/live',
+            data: {
+              teamOne: teamOneArray,
+              teamTwo: teamTwoArray
+            }
+              
+          }).done(function(data){
+            console.log('ajax team success');
+            //window.location = "/results";
+          });
+
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert("error liveLookup");
+      }
+    });
+  }
+}
+
+///////////////////////////////////////////////// FIND SUMMONER NAME && ID /////////////////////////////////////////////////
+
   function summonerLookUp() {
 
-    var API_KEY = "a208ee65-10b4-4356-b4fd-e7a06292f3b1";
+    API_KEY = "a208ee65-10b4-4356-b4fd-e7a06292f3b1";
 
     if (summonerName !== "") {
       $.ajax({
@@ -48,6 +147,8 @@ $(document).ready(function(){
       });
     } 
   } 
+
+  ///////////////////////////////////////////////// RANKED DATA  ///////////////////////////////////////////////// 
   
   function  getRanked(summonerID, api) {
     $.ajax({
@@ -87,6 +188,8 @@ $(document).ready(function(){
     });
   }
 
+  ///////////////////////////////////////////////// CHAMPION NAMES  ///////////////////////////////////////////////// 
+
   function getChampionName(id){
     // Retrieve the object from storage
     retrievedObject = localStorage.getItem('championList');
@@ -100,6 +203,8 @@ $(document).ready(function(){
       }
     }
   }
+
+///////////////////////////////////////////////// SAVE CHAMPION ID TO LOCAL STORAGE  /////////////////////////////////////////////////
 
   function getChampionTitle(id){
     // Retrieve the object from storage
