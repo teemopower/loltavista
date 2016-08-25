@@ -173,7 +173,7 @@ a{
 }
 
 .teamTwoList{
-  
+
 }
 
 .teamOneName{
@@ -183,15 +183,25 @@ a{
 }
 
 .versus{
-  
+  position: absolute;
+  top: 330px;
+  left: 40%;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 50px;
+  color: red;
 }
 
 .liveTitle{
-  
+  font-family: 'Bungee Shade', cursive;
 }
 
 .liveImg{
  
+}
+
+.teamOneDiv{
+  margin-bottom: 180px;
+  margin-top: 50px;
 }
 
 

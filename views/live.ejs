@@ -1,42 +1,35 @@
 <div class="container">
 
-
-<h1 class='liveTitle'>live page</h1>
+<a href="/"><h1 class='liveTitle'>Lolta Vista</h1></a>
 <p class="versus">VS.</p>
 
-<ul id="teamOneList">
-<% sum.forEach(function(data){%>
-  
-  <div class="row">
-    
-    <% var array = []; %>
-    <% array.push(data.championName); %>
-    
-    <% if (data.teamId === 100){ %>
-    
-    <div class="col-sm-2">
-      
-      <% for(var i = 0; i < array.length; i ++){ %>
-        <% if(data.championName == array[i]){ %>
-          <img src="/images/<%= array[i].toLowerCase().replace(/[^a-zA-Z0-9+]+/gi, ''); %>.jpg" class="circle" id="liveImg">
-        <% } %> 
+<div class="teamOneDiv">
+
+  <ul id="teamOneList">
+    <% sum.forEach(function(data){%>
+      <div class="row">
+        <% var array = []; %>
+        <% array.push(data.championName); %>
+        
+        <% if (data.teamId === 100){ %>
+          <div class="col-sm-2">      
+            <% for(var i = 0; i < array.length; i ++){ %>
+              <% if(data.championName == array[i]){ %>
+                <img src="/images/<%= array[i].toLowerCase().replace(/[^a-zA-Z0-9+]+/gi, ''); %>.jpg" class="circle" id="liveImg">
+              <% } %> 
+            <% } %>
+
+          <li class="teamOneName"><%= data.summonerName %></li>
+
+        </div>
       <% } %>
-    
-    
-      <li class="teamOneName"><%= data.summonerName %></li>
-    </div>
-   
-    
-  <% } %>
-  
-<% }); %>
-</ul>
+    <% }); %>
+  </ul>
+</div>
 
-
+<div class="teamTwoList">
 <ul id="teamTwoList">
 <% sum.forEach(function(data){%>
-  
- 
     
     <% var array = []; %>
     <% array.push(data.championName); %>
@@ -51,20 +44,13 @@
         <% } %> 
       <% } %>
     
-  
-  
-  
- 
-    
-    
       <li class="teamTwoName"><%= data.summonerName %></li>
+    
     </div>
-  
   <% } %>
-  
-  
 <% }); %>
 </ul>
+</div>
 
 </div>
 
