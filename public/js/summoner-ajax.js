@@ -21,11 +21,10 @@ $(document).ready(function(){
       }
     });
     summonerName = $('#addEntry').val(); // input value
+    
     // GET SUMMONER ID
     summonerLookUp();
   });
-
-  
 
   ///////////////////////////////////////////////// Live Button ///////////////////////////////////////////////// 
 
@@ -38,9 +37,7 @@ $(document).ready(function(){
   ///////////////////////////////////////////////// ONLY ID LOOK UP  ///////////////////////////////////////////////// 
 
 function idLookUp(){
-
     if (summonerName2 !== "") {
-
       $.ajax({
         url: 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName2 + '?api_key=' + API_KEY,
         type: 'GET',
@@ -51,11 +48,7 @@ function idLookUp(){
           sumNamenospace = sumNamenospace.toLowerCase().trim();
           
           var summonerID = json[sumNamenospace].id;
-
-          console.log(summonerID);
-
           liveLookUp(summonerID, API_KEY);
-
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert("error getting Summoner ID!");
@@ -67,7 +60,6 @@ function idLookUp(){
 ///////////////////////////////////////////////// LIVE GAME  ///////////////////////////////////////////////// 
 
 function liveLookUp(id, api){
-
   if (id) {
     $.ajax({
       url: "https://na.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/" + id + "?api_key=" + api ,
@@ -76,8 +68,6 @@ function liveLookUp(id, api){
       data:{},
 
       success: function (json) {
-        console.log(json);
-
         var teamLive = {};
         var teamArray = [];
 
@@ -85,10 +75,7 @@ function liveLookUp(id, api){
           //console.log(json['participants'][i]['summonerName']);
 
           // SET DIFFERENT TEAM STATS
-          if(json['participants'][i]['summonerName']){
-            
-            console.log("champname  - " + getChampionName(json['participants'][i]['championId']));
-            
+          if(json['participants'][i]['summonerName']){            
             teamLive = {
               summonerID: json['participants'][i]['summonerId'],
               summonerName: json['participants'][i]['summonerName'],
@@ -96,7 +83,6 @@ function liveLookUp(id, api){
               teamId: json['participants'][i]['teamId'],
               championName: getChampionName(json['participants'][i]['championId'])
             }
-
             teamArray.push(teamLive);
           }    
         }// END FOR LOOP
@@ -126,9 +112,7 @@ function liveLookUp(id, api){
 ///////////////////////////////////////////////// FIND SUMMONER NAME && ID /////////////////////////////////////////////////
 
   function summonerLookUp() {
-
     if (summonerName !== "") {
-      console.log("summonerLookUp in");
       $.ajax({
         url: 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName + '?api_key=' + API_KEY,
         type: 'GET',
@@ -153,7 +137,6 @@ function liveLookUp(id, api){
   ///////////////////////////////////////////////// RANKED DATA  ///////////////////////////////////////////////// 
   
   function  getRanked(summonerID, api) {
-    console.log("getranked in");
     $.ajax({
       url: "https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/"+ summonerID + "/ranked?season=SEASON2016&api_key=" + api,
       type: 'GET',

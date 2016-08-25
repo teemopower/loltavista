@@ -164,47 +164,34 @@ a{
 }
 
 .liveContainer{
-  width: 1200px;
+  width: 1300px;
   height: 1000px;
   margin: 50px;
 }
 
-.team1{
-  float: left;
-  display: inline-block;
-  clear: right;
-  margin: 100px 0px 0 0px;
-  background-color: gray;
+.teamOneList{
 }
 
-.team2{
-  float: right;
-  position: relative;
-  display: inline-block;
-  left: -200px;
-  top: 400px;
-  clear: left;
-  background-color: gray;
+.teamTwoList{
+  
 }
 
 .teamOneName{
-  margin-left: 30px;
 }
 
 .teamTwoName{
-  margin-left: 30px;
 }
 
 .versus{
-  position: absolute;
-  top: 400px;
-  left: 500px;
-  font-family: 'Permanent Marker', cursive;
-  font-size: 50px;
+  
 }
 
 .liveTitle{
-  font-family: 'Permanent Marker', cursive;
+  
+}
+
+.liveImg{
+ 
 }
 
 
