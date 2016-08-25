@@ -127,7 +127,7 @@ app.get('/login', function(req, res) {
 });
 
 app.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/profile',
   failureRedirect: '/login',
   failureFlash: 'Invalid username and/or password',
   successFlash: 'You have logged in'
@@ -139,12 +139,23 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-app.get('/login', function(req, res) {
-  res.render('login');
+app.get('/profile', function(req, res) {
+  res.render('profile');
+});
+
+app.post('/profile', function(req, res) {
+  db.user.destroy({
+  where: {
+    name: req.body.username
+  }
+  }).then(function() {
+    // add alert for success
+    res.redirect('/');
+  });
+  
 });
 
 app.get('/live', function(req, res) {
-  
   // READ FROM DATABASE
   db.live.findAll({
       order: [['createdAt','DESC']],

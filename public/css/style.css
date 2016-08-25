@@ -204,6 +204,12 @@ a{
   margin-top: 50px;
 }
 
+.alert{
+  width: 400px;
+  position: relative;
+  left: 30%;
+  margin: 0;
+}
 
 
 

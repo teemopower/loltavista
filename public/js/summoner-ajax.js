@@ -103,7 +103,7 @@ function liveLookUp(id, api){
         });
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
-          alert("error liveLookup");
+          alert("Summoner not in a live game");
       }
     });
   }
