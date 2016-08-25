@@ -3,6 +3,15 @@
 <p class="versus">VS.</p>
 <% var count = 0;%>
 <% sum.forEach(function(data){%>
+    
+    <% var array = []; %>
+    <% array.push(data.championName); %>
+    <% for(var i = 0; i < array.length; i ++){ %>
+      <% if(data.championName == array[i]){ %>
+        <img src="/images/<%= array[i].toLowerCase().replace(/[^a-zA-Z0-9+]+/gi, ''); %>.jpg" class="circle">
+      <% } %> 
+    <% } %>
+
   <% //console.log(data);%>
   <% count += 1;%>
  

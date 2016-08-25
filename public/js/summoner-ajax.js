@@ -3,13 +3,13 @@ $(document).ready(function(){
   // GLOBALS
   var summonerName;
   var summonerName2;
-  var API_KEY = "RGAPI-0EA9F2AB-FCFE-402E-8EBD-D96895015531";
+  API_KEY = "a208ee65-10b4-4356-b4fd-e7a06292f3b1";
 
   ///////////////////////////////////////////////// Search Button  ///////////////////////////////////////////////// 
 
   $('#btn').on('click',function(){
     $.ajax({
-      url: "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?dataById=true&api_key=a208ee65-10b4-4356-b4fd-e7a06292f3b1",
+      url: "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?dataById=true&api_key=" + API_KEY,
       type: 'GET',
       dataType: 'json',
       success: function (data) {
@@ -20,11 +20,12 @@ $(document).ready(function(){
           //alert("error getting Summoner data 2!");
       }
     });
+    summonerName = $('#addEntry').val(); // input value
     // GET SUMMONER ID
     summonerLookUp();
   });
 
-  summonerName = $('#addEntry').val(); // input value
+  
 
   ///////////////////////////////////////////////// Live Button ///////////////////////////////////////////////// 
 
@@ -126,9 +127,8 @@ function liveLookUp(id, api){
 
   function summonerLookUp() {
 
-    API_KEY = "a208ee65-10b4-4356-b4fd-e7a06292f3b1";
-
     if (summonerName !== "") {
+      console.log("summonerLookUp in");
       $.ajax({
         url: 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName + '?api_key=' + API_KEY,
         type: 'GET',
@@ -153,6 +153,7 @@ function liveLookUp(id, api){
   ///////////////////////////////////////////////// RANKED DATA  ///////////////////////////////////////////////// 
   
   function  getRanked(summonerID, api) {
+    console.log("getranked in");
     $.ajax({
       url: "https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/"+ summonerID + "/ranked?season=SEASON2016&api_key=" + api,
       type: 'GET',
