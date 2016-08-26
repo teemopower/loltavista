@@ -144,6 +144,7 @@ app.get('/profile', function(req, res) {
 });
 
 app.post('/profile', function(req, res) {
+  console.log(req.body);
   db.user.destroy({
   where: {
     name: req.body.username
