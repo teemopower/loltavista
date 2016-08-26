@@ -177,9 +177,11 @@ a{
 }
 
 .teamOneName{
+  clear: both;
 }
 
 .teamTwoName{
+  clear: both;
 }
 
 .versus{
