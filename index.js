@@ -167,23 +167,18 @@ app.get('/live', function(req, res) {
 });
 
 app.post('/live', function(req, res) {
-  console.log(req.body.arr[0].summonerName);
+  //console.log(req.body.arr[0].summonerName);
 
   for(var i = 0; i < req.body.arr.length; i++){
-    db.live.findOrCreate({
-    where: { summonerName: req.body.arr[i].summonerName},
-    defaults: {
+    db.live.create({ 
       summonerName: req.body.arr[i].summonerName,
       summonerId: req.body.arr[i].summonerId,
       championId: req.body.arr[i].championId,
       teamId: req.body.arr[i].teamId,
       championName: req.body.arr[i].championName
-    }
-    }).spread(function(user, created) {
-      res.redirect('live');
-    }).catch(function(error) {
-      //console.log(error);
-    });
+  }).then(function(task) {
+    res.redirect('live');
+  });
   }
 }); // end of post /live
 
