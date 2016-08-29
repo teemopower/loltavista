@@ -2,6 +2,7 @@
 @import 'https://fonts.googleapis.com/css?family=Cantarell';
 @import 'https://fonts.googleapis.com/css?family=Yatra+One';
 @import 'https://fonts.googleapis.com/css?family=Permanent+Marker';
+@import 'https://fonts.googleapis.com/css?family=Bungee+Inline';
 
 html {
   /* Size of largest container or bigger */
@@ -200,10 +201,10 @@ a{
 .versus{
   position: absolute;
   top: 330px;
-  left: 40%;
+  left: 42%;
   font-family: 'Permanent Marker', cursive;
   font-size: 50px;
-  color: #C993C7;
+  color: black;
 }
 
 .liveTitle{
@@ -228,9 +229,9 @@ a{
 
 span{
   margin-top: 140px;
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'Bungee Inline', cursive;
   position: relative;
-  top: 40px;
+  top: 50px;
   left: 10px;
   font-size: 20px;
 }

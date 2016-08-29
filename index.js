@@ -163,8 +163,6 @@ app.get('/live', function(req, res) {
  request({
      url: "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?dataById=true&api_key=" + API_KEY,
   }, function(error, response, body) {
-    //console.log(JSON.parse(body));
-
     var obj =  JSON.parse(body)['data'];
 
   //put into championname table 
@@ -188,10 +186,12 @@ app.get('/live', function(req, res) {
     url: "https://na.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/" + summonerId + "?api_key=" + API_KEY 
   }, function(error, response, body) {
     var liveObj = JSON.parse(body)['participants'];
-
-    console.log(liveObj);
-
-    res.render('live', { liveObj: liveObj });
+    
+    if(liveObj){
+      res.render('live', { liveObj: liveObj });
+    } else {
+      console.log("Summoner is currently NOT playing");
+    }  
   });
 });
 
