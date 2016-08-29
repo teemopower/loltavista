@@ -3,56 +3,30 @@
 <a href="/"><h1 class='liveTitle'>Lolta Vista</h1></a>
 <p class="versus">VS.</p>
 
-<div class="teamOneDiv">
-
-  <ul id="teamOneList">
-    <% sum.forEach(function(data){%>
-      <div class="row">
-        <% var array = []; %>
-        <% array.push(data.championName); %>
-        
-        <% if (data.teamId === 100){ %>
-          <div class="col-sm-2">      
-            <% for(var i = 0; i < array.length; i ++){ %>
-              <% if(data.championName == array[i]){ %>
-                <img src="/images/<%= array[i].toLowerCase().replace(/[^a-zA-Z0-9+]+/gi, ''); %>.jpg" class="circle" id="liveImg">
-              <% } %> 
-            <% } %>
-
-          <li class="teamOneName"><%= data.summonerName %></li>
-
-        </div>
-      <% } %>
-    <% }); %>
-  </ul>
-</div>
-
-<div class="teamTwoList">
-<ul id="teamTwoList">
-<% sum.forEach(function(data){%>
-    
-    <% var array = []; %>
-    <% array.push(data.championName); %>
-    
-    <% if (data.teamId === 200){ %>
-    
-    <div class="col-sm-2">
-      
-      <% for(var i = 0; i < array.length; i ++){ %>
-        <% if(data.championName == array[i]){ %>
-          <img src="/images/<%= array[i].toLowerCase().replace(/[^a-zA-Z0-9+]+/gi, ''); %>.jpg" class="circle" id="liveImg">
-        <% } %> 
-      <% } %>
-    
-      <li class="teamTwoName"><%= data.summonerName %></li>
-    
-    </div>
-  <% } %>
-<% }); %>
-</ul>
-</div>
-
-</div>
+  <div class="teamOneDiv">
+    <ul id="teamOneList">
+      <% liveObj.forEach(function(data){%>
+        <div class="row">
+          <% if (data.teamId === 100){ %>
+            <div class="col-sm-2">      
+            <li class="teamOneName"><span><%= data.summonerName %></span></li>
+          </div>
+        <% } %>
+      <% }); %>
+    </ul>
+  </div>
+  <div class="teamTwoList">
+    <ul id="teamTwoList">
+      <% liveObj.forEach(function(data){%>  
+          <% if (data.teamId === 200){ %>
+            <div class="col-sm-2">
+              <li class="teamTwoName"><span><%= data.summonerName %></span></li>
+            </div>
+        <% } %>
+      <% }); %>
+    </ul>
+  </div>
+  </div>
 </div>
 
 

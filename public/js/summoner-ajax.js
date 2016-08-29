@@ -1,9 +1,7 @@
 $(document).ready(function(){
-
   // GLOBALS
   var summonerName;
-  var summonerName2;
-  API_KEY = "a208ee65-10b4-4356-b4fd-e7a06292f3b1";
+  var API_KEY = "a208ee65-10b4-4356-b4fd-e7a06292f3b1";
 
   ///////////////////////////////////////////////// Search Button  ///////////////////////////////////////////////// 
 
@@ -13,11 +11,10 @@ $(document).ready(function(){
       type: 'GET',
       dataType: 'json',
       success: function (data) {
-        //console.log(data);
         localStorage.setItem('championList', JSON.stringify(data));
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
-          //alert("error getting Summoner data 2!");
+          alert("error getting Summoner data 2!");
       }
     });
     summonerName = $('#addEntry').val(); // input value
@@ -29,32 +26,28 @@ $(document).ready(function(){
   ///////////////////////////////////////////////// Live Button ///////////////////////////////////////////////// 
 
   $('#btnLive').on('click',function(){
-    console.log('livebtn');
-    summonerName2 = $('#addEntry').val();
+    summonerName = $('#addEntry').val();
     idLookUp();
   });
 
   ///////////////////////////////////////////////// ONLY ID LOOK UP  ///////////////////////////////////////////////// 
 
 function idLookUp(){
-    if (summonerName2 !== "") {
-      $.ajax({
-        url: 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName2 + '?api_key=' + API_KEY,
-        type: 'GET',
-        dataType: 'json',
-        success: function (json) {
-            
-          var sumNamenospace = summonerName2.replace(/\s/g, '');
-          sumNamenospace = sumNamenospace.toLowerCase().trim();
-          
-          var summonerID = json[sumNamenospace].id;
-          liveLookUp(summonerID, API_KEY);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert("error getting Summoner ID!");
-        }
-      });
-    } 
+  if (summonerName !== "") {
+    $.ajax({
+      url: 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName + '?api_key=' + API_KEY,
+      type: 'GET',
+      dataType: 'json',
+      success: function (json) {  
+        var sumNamenospace = summonerName.toLowerCase().trim().replace(/\s/g, '');
+        var summonerID = json[sumNamenospace].id;
+        liveLookUp(summonerID, API_KEY);
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert("error getting Summoner ID!");
+      }
+    });
+  } 
 }
 
 ///////////////////////////////////////////////// LIVE GAME  ///////////////////////////////////////////////// 
@@ -62,76 +55,41 @@ function idLookUp(){
 function liveLookUp(id, api){
   if (id) {
     $.ajax({
-      url: "https://na.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/" + id + "?api_key=" + api ,
-      type: 'GET',
-      dataType: 'json',
-      data:{},
-
-      success: function (json) {
-        var teamLive = {};
-        var teamArray = [];
-
-        for(var i = 0; i < json['participants'].length; i++){
-          //console.log(json['participants'][i]);
-
-          // SET DIFFERENT TEAM STATS
-          if(json['participants'][i]['summonerName']){            
-            teamLive = {
-              summonerId: json['participants'][i]['summonerId'],
-              summonerName: json['participants'][i]['summonerName'],
-              championId: json['participants'][i]['championId'],
-              teamId: json['participants'][i]['teamId'],
-              championName: getChampionName(json['participants'][i]['championId'])
-            }
-            teamArray.push(teamLive);
-          }    
-        }// END FOR LOOP
-
-        // DATA SENT TO INDEX.JS
-        var dataObj = {
-          arr: teamArray
-        }
-        
-        $.ajax({
-          method: 'post',
-          url: '/live',
-          contentType: 'application/json',
-          data: JSON.stringify(dataObj),   
-        }).done(function(data){
-          console.log('ajax team success');
-          window.location = "/live";
-        });
-      },
-      error: function (XMLHttpRequest, textStatus, errorThrown) {
-          alert("Summoner not in a live game");
-      }
+      method: 'post',
+      url: '/live',
+      data: {
+        id: id,
+        api: api
+      },   
+    }).done(function(data){
+      console.log('ajax team success');
+      window.location = "/live";
     });
   }
 }
 
-///////////////////////////////////////////////// FIND SUMMONER NAME && ID /////////////////////////////////////////////////
+///////////////////////////////////////////////// FIND SUMMONER NAME /////////////////////////////////////////////////
 
-  function summonerLookUp() {
-    if (summonerName !== "") {
-      $.ajax({
-        url: 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName + '?api_key=' + API_KEY,
-        type: 'GET',
-        dataType: 'json',
-        success: function (json) {
-          var sumNameNoSpace = summonerName.replace(/\s/g, '');
-          sumNameNoSpace = sumNameNoSpace.toLowerCase().trim();
+function summonerLookUp() {
+  if (summonerName !== "") {
+    $.ajax({
+      url: 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName + '?api_key=' + API_KEY,
+      type: 'GET',
+      dataType: 'json',
+      success: function (json) {
+        var sumNameNoSpace = summonerName.toLowerCase().trim().replace(/\s/g, '');
 
-          var summonerLevel = json[sumNameNoSpace].summonerLevel;
-          var summonerID = json[sumNameNoSpace].id;
+        var summonerLevel = json[sumNameNoSpace].summonerLevel;
+        var summonerID = json[sumNameNoSpace].id;
 
-          // GET RANKED
-          getRanked(summonerID, API_KEY);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert("error getting Summoner data!");
-        }
-      });
-    } 
+        // GET RANKED
+        getRanked(summonerID, API_KEY);
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert("error getting Summoner data!");
+      }
+    });
+  } 
   } 
 
   ///////////////////////////////////////////////// RANKED DATA  ///////////////////////////////////////////////// 
@@ -178,23 +136,7 @@ function liveLookUp(id, api){
 
   function getChampionName(id){
     // Retrieve the object from storage
-    retrievedObject = localStorage.getItem('championList');
-
-    obj =  JSON.parse(retrievedObject)["data"];
-
-    for(var key in obj){
-      if(obj[key]["id"] === id){
-        //console.log(obj[key]);
-        return obj[key]["name"];
-      }
-    }
-  }
-
-///////////////////////////////////////////////// SAVE CHAMPION ID TO LOCAL STORAGE  /////////////////////////////////////////////////
-
-  function getChampionTitle(id){
-    // Retrieve the object from storage
-    retrievedObject = localStorage.getItem('championList');
+    var retrievedObject = localStorage.getItem('championList');
 
     obj =  JSON.parse(retrievedObject)["data"];
 

@@ -10,12 +10,16 @@ var session = require('express-session');
 var passport = require('./config/ppConfig');
 var flash = require('connect-flash');
 var isLoggedIn = require('./middleware/isLoggedIn');
+var request = require('request');
 
 var db = require('./models');
 var app = express();
 
 var summonerName;
 var summonerNameLive;
+
+var summonerId;
+var API_KEY = "a208ee65-10b4-4356-b4fd-e7a06292f3b1";
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -151,36 +155,50 @@ app.post('/profile', function(req, res) {
   }).then(function() {
     // add alert for success
     res.redirect('/');
-  });
-  
+  }); 
 });
 
 app.get('/live', function(req, res) {
-  // READ FROM DATABASE
-  db.live.findAll({
-      order: [['createdAt','DESC']],
-      limit: 10    
-  }).then(function(sum) {
-    res.render('live', { sum: sum });
+  
+ request({
+     url: "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?dataById=true&api_key=" + API_KEY,
+  }, function(error, response, body) {
+    //console.log(JSON.parse(body));
+
+    var obj =  JSON.parse(body)['data'];
+
+  //put into championname table 
+  for(var key in obj){
+    db.championname.findOrCreate({  
+    where: {
+      championId: obj[key]['id']
+    }, 
+    defaults: {
+      championId: obj[key]['championId'],
+      name: obj[key]['name'],
+      title: obj[key]['title'],
+    }
+    }).spread(function(proj, wasCreated){
+  
+    });
+  } 
   });
 
+ request({
+    url: "https://na.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/" + summonerId + "?api_key=" + API_KEY 
+  }, function(error, response, body) {
+    var liveObj = JSON.parse(body)['participants'];
+
+    console.log(liveObj);
+
+    res.render('live', { liveObj: liveObj });
+  });
 });
 
 app.post('/live', function(req, res) {
-  //console.log(req.body.arr[0].summonerName);
-
-  for(var i = 0; i < req.body.arr.length; i++){
-    db.live.create({ 
-      summonerName: req.body.arr[i].summonerName,
-      summonerId: req.body.arr[i].summonerId,
-      championId: req.body.arr[i].championId,
-      teamId: req.body.arr[i].teamId,
-      championName: req.body.arr[i].championName
-  }).then(function(task) {
-    res.redirect('live');
-  });
-  }
-}); // end of post /live
+  summonerId = req.body.id;
+  res.redirect('live');
+});  
 
 var server = app.listen(process.env.PORT || 3000);
 module.exports = server;

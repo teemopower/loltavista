@@ -1,11 +1,9 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var lives = sequelize.define('lives', {
-    summonerId: DataTypes.INTEGER,
-    summonerName: DataTypes.STRING,
+  var championname = sequelize.define('championname', {
     championId: DataTypes.INTEGER,
-    teamId: DataTypes.INTEGER,
-    championName: DataTypes.STRING
+    name: DataTypes.STRING,
+    title: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
@@ -13,5 +11,5 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
-  return lives;
+  return championname;
 };
