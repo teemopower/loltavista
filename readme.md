@@ -1,10 +1,16 @@
-// Jimmy Kim
+Jimmy Kim
 
-// Project Name: LOLta Vista
+Project Name: LOLta Vista
 
-// Description: Allows a user to look up statistics for a League of Legend ranked player using Riot Games API
+Description: 
 
-// To Test: Type in a Summoner's name - if needed use ramencola 
+Allows a user to look up statistics for a League of Legend ranked player using Riot Games API. A user can also check to see if a ranked player is current in a live game.
 
-// Technologies Used: HTML, CSS, JavaScript, jQuery, Node.js, Express, Sequelize, SQL, bcrypt, Postgres, Passport
+To Test: 
+
+To test statistics lookup type in a Summoner's name - use ramencola
+
+Technologies Used: 
+
+HTML, CSS, JavaScript, jQuery, Node.js, Express, Sequelize, SQL, bcrypt, Postgres, Passport, flash
 
