@@ -17,8 +17,9 @@ var app = express();
 
 var summonerName;
 var summonerNameLive;
-
 var summonerId;
+var resultObj;
+var champions = [];
 var API_KEY = "a208ee65-10b4-4356-b4fd-e7a06292f3b1";
 
 app.set('view engine', 'ejs');
@@ -49,15 +50,87 @@ app.get('/', function(req, res) {
   res.render('home');
 });
 
-app.get('/results', function(req, res) {
-  // READ FROM DATABASE
-  db.summoner.findAll({
-    where: {
-      sumName: summonerName // SET NAME FROM GLOBAL
-    },
-    order: [['totalPlayer','DESC']]
-  }).then(function(sum) {
-    res.render('results', { sum: sum });
+app.post('/results', function(req, res) {
+  summonerName = req.body.name.toLowerCase().trim().replace(/\s/g, '');
+  res.redirect('results');
+}); 
+
+app.get('/results', function(req, res, next){
+
+  // GET champion names
+  request({
+    url: "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?dataById=true&api_key=" + API_KEY
+  }, function(error, response, body){
+    
+    var championNameObj = JSON.parse(body);
+    var data = championNameObj['data'];
+    
+
+    for(var prop in data){
+      //console.log(data[prop]['name']);
+      champions.push({ 
+        id: data[prop]['id'],
+        name: data[prop]['name']
+      });  
+    }
+    
+  // GET summoner ID
+  request({
+    url: 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName + '?api_key=' + API_KEY
+  }, function(error, response, body){
+    var obj = JSON.parse(body);
+
+    for(var prop in obj){
+      summonerId = obj[prop]['id'];
+    }
+
+    // GET ranked data using summoner ID
+    request({
+      url: "https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/"+ summonerId + "/ranked?season=SEASON2017&api_key=" + API_KEY
+    }, function(error, response, body) {
+      
+      var rankedData = JSON.parse(body);
+      for(var i = 0; i < rankedData.champions.length; i++){
+        //console.log(rankedData.champions);
+
+        function getName(id){
+          for(var prop in champions){
+            if(id === champions[prop]['id'] && champions[prop] != null){
+              //console.log(champions[prop]['name']);
+              return champions[prop]['name'];
+            }
+          }
+        }
+
+        //WRITE TO DATABASE
+        db.summoner.findOrCreate({  
+          where: {
+            champName: getName(rankedData.champions[i]['id']),
+            winRate: ((rankedData.champions[i]['stats']['totalSessionsWon']/rankedData.champions[i]['stats']['totalSessionsPlayed'])*100).toFixed()
+          }, 
+          defaults: {
+            champName: getName(rankedData.champions[i]['id']),
+            sumName: summonerName,
+            sumId: summonerId,
+            totalPlayer: rankedData.champions[i]['stats']['totalSessionsPlayed'],
+            won: rankedData.champions[i]['stats']['totalSessionsWon'],
+            winRate: ((rankedData.champions[i]['stats']['totalSessionsWon']/rankedData.champions[i]['stats']['totalSessionsPlayed'])*100).toFixed()
+          }
+          }).spread(function(proj, wasCreated){
+            //res.redirect("/results");
+        }); 
+      } // end of loop
+
+        db.summoner.findAll({
+        where: {
+          sumName: summonerName // SET NAME FROM GLOBAL
+        },
+        order: [['totalPlayer','DESC']]
+        }).then(function(sum) {
+          res.render('results', { sum: sum });
+        });
+      });
+    });
   });
 });
 
@@ -72,32 +145,6 @@ app.get('/sortname', function(req, res) {
     res.render('results', { sum: sum });
   });
 });
-
-// POST FROM SUMMONER-AJAX
-app.post('/results', function(req, res){
-
-  // SET GLOBAL SUMMONER NAME
-  summonerName = req.body.sumName;
-
-  // WRITE TO DATABASE
-  db.summoner.findOrCreate({  
-    where: {
-      champName: req.body.champName,
-      winRate: req.body.winRate
-    }, 
-    defaults: {
-      champName: req.body.champName,
-      sumName: req.body.sumName,
-      sumId: req.body.sumId,
-      champName: req.body.champName,
-      totalPlayer: req.body.totalPlayer,
-      won: req.body.won,
-      winRate: req.body.winRate
-    }
-    }).spread(function(proj, wasCreated){
-      res.redirect("/results");
-  }); 
-});// END /RESULTS POST
 
 // route to sign up for account
 app.get('/signup', function(req, res) {
@@ -158,45 +205,34 @@ app.post('/profile', function(req, res) {
   }); 
 });
 
-app.get('/live', function(req, res) {
-  
- request({
-     url: "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?dataById=true&api_key=" + API_KEY,
-  }, function(error, response, body) {
-    var obj =  JSON.parse(body)['data'];
-
-  //put into championname table 
-  for(var key in obj){
-    db.championname.findOrCreate({  
-    where: {
-      championId: obj[key]['id']
-    }, 
-    defaults: {
-      championId: obj[key]['championId'],
-      name: obj[key]['name'],
-      title: obj[key]['title'],
-    }
-    }).spread(function(proj, wasCreated){
-  
-    });
-  } 
-  });
-
- request({
-    url: "https://na.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/" + summonerId + "?api_key=" + API_KEY 
-  }, function(error, response, body) {
-    var liveObj = JSON.parse(body)['participants'];
+app.get('/live', function(req, res){
+  request({
+    url: 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName + '?api_key=' + API_KEY
+    }, function(error, response, body){
     
-    if(liveObj){
-      res.render('live', { liveObj: liveObj });
-    } else {
-      console.log("Summoner is currently NOT playing");
-    }  
-  });
-});
+    var obj = JSON.parse(body);
+    var summonerId;
+
+    for(var prop in obj){
+      summonerId = obj[prop]['id'];
+    }
+
+  request({
+    url: "https://na.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/" + summonerId + "?api_key=" + API_KEY 
+    }, function(error, response, body) {
+      var liveObj = JSON.parse(body)['participants'];
+      
+      if(liveObj){
+        res.render('live', { liveObj: liveObj });
+      } else {
+        console.log("Summoner is currently NOT playing");
+      }  
+    });  
+  }); // end of request
+}); // end of live
 
 app.post('/live', function(req, res) {
-  summonerId = req.body.id;
+  summonerName = req.body.name.toLowerCase().trim().replace(/\s/g, '');
   res.redirect('live');
 });  
 
