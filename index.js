@@ -123,7 +123,7 @@ app.get('/results', function(req, res, next){
 
         db.summoner.findAll({
         where: {
-          sumName: summonerName // SET NAME FROM GLOBAL
+          sumName: summonerName 
         },
         order: [['totalPlayer','DESC']]
         }).then(function(sum) {
@@ -138,7 +138,7 @@ app.get('/sortname', function(req, res) {
   // READ FROM DATABASE
   db.summoner.findAll({
     where: {
-      sumName: summonerName // SET NAME FROM GLOBAL
+      sumName: summonerName 
     },
     order: [['champName','ASC']]
   }).then(function(sum) {
@@ -225,7 +225,8 @@ app.get('/live', function(req, res){
       if(liveObj){
         res.render('live', { liveObj: liveObj });
       } else {
-        console.log("Summoner is currently NOT playing");
+        req.flash('error', 'Summoner is currently not in a live game');
+        res.redirect('/');
       }  
     });  
   }); // end of request
