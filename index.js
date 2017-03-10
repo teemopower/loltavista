@@ -90,36 +90,38 @@ app.get('/results', function(req, res, next){
     }, function(error, response, body) {
       
       var rankedData = JSON.parse(body);
-      for(var i = 0; i < rankedData.champions.length; i++){
-        //console.log(rankedData.champions);
+      if(rankedData.champions.length > 0){
+        for(var i = 0; i < rankedData.champions.length; i++){
+          //console.log(rankedData.champions);
 
-        function getName(id){
-          for(var prop in champions){
-            if(id === champions[prop]['id'] && champions[prop] != null){
-              //console.log(champions[prop]['name']);
-              return champions[prop]['name'];
+          function getName(id){
+            for(var prop in champions){
+              if(id === champions[prop]['id'] && champions[prop] != null){
+                //console.log(champions[prop]['name']);
+                return champions[prop]['name'];
+              }
             }
           }
-        }
 
-        //WRITE TO DATABASE
-        db.summoner.findOrCreate({  
-          where: {
-            champName: getName(rankedData.champions[i]['id']),
-            winRate: ((rankedData.champions[i]['stats']['totalSessionsWon']/rankedData.champions[i]['stats']['totalSessionsPlayed'])*100).toFixed()
-          }, 
-          defaults: {
-            champName: getName(rankedData.champions[i]['id']),
-            sumName: summonerName,
-            sumId: summonerId,
-            totalPlayer: rankedData.champions[i]['stats']['totalSessionsPlayed'],
-            won: rankedData.champions[i]['stats']['totalSessionsWon'],
-            winRate: ((rankedData.champions[i]['stats']['totalSessionsWon']/rankedData.champions[i]['stats']['totalSessionsPlayed'])*100).toFixed()
-          }
-          }).spread(function(proj, wasCreated){
-            //res.redirect("/results");
-        }); 
-      } // end of loop
+          //WRITE TO DATABASE
+          db.summoner.findOrCreate({  
+            where: {
+              champName: getName(rankedData.champions[i]['id']),
+              winRate: ((rankedData.champions[i]['stats']['totalSessionsWon']/rankedData.champions[i]['stats']['totalSessionsPlayed'])*100).toFixed()
+            }, 
+            defaults: {
+              champName: getName(rankedData.champions[i]['id']),
+              sumName: summonerName,
+              sumId: summonerId,
+              totalPlayer: rankedData.champions[i]['stats']['totalSessionsPlayed'],
+              won: rankedData.champions[i]['stats']['totalSessionsWon'],
+              winRate: ((rankedData.champions[i]['stats']['totalSessionsWon']/rankedData.champions[i]['stats']['totalSessionsPlayed'])*100).toFixed()
+            }
+            }).spread(function(proj, wasCreated){
+              //res.redirect("/results");
+          }); 
+        } // end of loop
+      }
 
         db.summoner.findAll({
         where: {

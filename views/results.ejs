@@ -7,49 +7,52 @@
     <input type="button" id="btn" value="Search" class="btn btn-info">
     <input type="button" id="btnLive" class="btn btn-danger" value="Live">
   </div>
-  
-  <p class="resultsTitle">Statistics</p>
-  <p class="badgeText">Badges</p>
-  
-  <div class="sortDiv">
-    <p class="sortText">Sort By: </p>
-    <a href="/sortname"><button type="button" class="btn btn-warning">Name</button></a>
-    <a href="/results"><button type="button" class="btn btn-warning"># Played</button></a>
+
+  <div class='row'>
+    <div class='col-xs-3'></div>
+    <div class='col-xs-3'><p class="resultsTitle">Statistics</p></div>
+    <div class='col-xs-3'><p class="badgeText">Rank</p></div>
+    <div class='col-xs-3'><p class="sortText">Sort By: </p><a href="/sortname"><button type="button" class="btn btn-default">Name</button></a><a href="/results"><button type="button" class="btn btn-default"># Played</button></a></div>
   </div>
   <hr>
-
   <% sum.forEach(function(champ){ %>
     <% if (champ.champName != null){ %>
       <% var array = []; %>
       <% array.push(champ.champName); %>
-      <% for(var i = 0; i < champ.champName.length; i++){ %>
-        <% if(champ.champName == array[i]){ %>
-          <img src="/images/<%= array[i].toLowerCase().replace(/[^a-zA-Z0-9+]+/gi, ''); %>.jpg" class="circle">
-        <% } %> 
-      <% } %>
-      
-      <div class="statsGroup">
-        <ul> 
-          <li class="name"><%= champ.champName %></li>
-           <% if(champ.winRate >= 50){ %>
-              <li class="winMajority">Win Rate: <strong class="rate"><%= champ.winRate %>%</strong></li>
-            <% } else { %>
-              <li class="winMinority">Win Rate: <strong class="rate"><%= champ.winRate %>%</strong></li>
+
+      <div class='row'>
+        <div class='col-xs-3'>
+          <% for(var i = 0; i < champ.champName.length; i++){ %>
+            <% if(champ.champName == array[i]){ %>
+              <img src="/images/<%= array[i].toLowerCase().replace(/[^a-zA-Z0-9+]+/gi, ''); %>.jpg" class="circle">
+            <% } %> 
+          <% } %>
+        </div>
+        <div class='col-xs-3'>
+          <ul> 
+            <li class="name"><%= champ.champName %></li>
+             <% if(champ.winRate >= 50){ %>
+                <li class="winMajority">Win Rate: <strong class="rate"><%= champ.winRate %>%</strong></li>
+              <% } else { %>
+                <li class="winMinority">Win Rate: <strong class="rate"><%= champ.winRate %>%</strong></li>
+              <% } %>
+            <li><%= champ.totalPlayer %> Played</li>
+          </ul>
+        </div>
+        <div class='col-xs-3'>
+            <% if(champ.winRate >= 65){ %>
+              <img class="badgeImg" src="/images/god.jpg">
+            <% } else if (champ.winRate >= 55 && champ.winRate < 65){ %>
+              <img class="badgeImg" src="/images/boss.jpg">
+            <% } else if(champ.winRate <= 40){ %>
+              <img class="badgeImg" src="/images/trash.jpg">
             <% } %>
-          <li><%= champ.totalPlayer %> Played</li>
-        </ul>
+        </div>
+        <div class='col-xs-3'></div>
       </div>
-      <div class="badgeGroup">
-        <% if(champ.winRate >= 65){ %>
-          <img class="badgeImg" src="/images/god.jpg">
-        <% } else if (champ.winRate >= 55 && champ.winRate < 65){ %>
-          <img class="badgeImg" src="/images/boss.jpg">
-        <% } else if(champ.winRate <= 40){ %>
-          <img class="badgeImg" src="/images/trash.jpg">
-        <% } %>
-      </div>
-      <br>
       <hr>
     <% } %>
   <% }); %>
 </div>
+
+
